@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 pt-5 pb-2">
+                <h3>新增 Cookie</h3>
+                <div class="create-block">
+                    <form class="row gx-3 bg-primary p-2 text-dark bg-opacity-50 rounded">
+                        <div class="mb-3">
+                            <label for="create_cookie_key" class="form-label">請輸入 Cookie Key</label>
+                            <input type="text" class="form-control" id="create_cookie_key" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="create_cookie_value" class="form-label">請輸入 Cookie Value</label>
+                            <textarea class="form-control" id="create_cookie_value" rows="3" required></textarea>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-primary mb-3">新增</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 py-2">
+                <h3>讀取 Cookie</h3>
+                <div class="read-block">
+                    <form class="row gx-3 bg-secondary p-2 text-dark bg-opacity-50 rounded">
+                        <div class="mb-3">
+                            <label for="read_cookie_key" class="form-label">請輸入 Cookie Key</label>
+                            <input type="text" class="form-control" id="read_cookie_key" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="read_cookie_value" class="form-label visually-hidden"></label>
+                            <input type="text" class="form-control" readonly id="read_cookie_value">
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-primary mb-3">讀取</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 py-2">
+                <h3>清除所有 Cookie</h3>
+                <div class="remove-block">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary mb-3">清除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 py-2">
+                <h3>動手 Key</h3>
+                <div class="handon-block">
+                    <div class="row gx-3 bg-danger p-2 text-dark bg-opacity-50 rounded">
+                        <div class="mb-3 col">
+                            <label for="handon_model" class="form-label">卡片模型(唯讀)</label>
+                            <textarea rows="5" class="form-control" id="handon_model" readonly></textarea>
+                        </div>
+                        <div class="mb-3 col">
+                            <label for="handon_js_object" class="form-label">物件結構</label>
+                            <textarea rows="10" class="form-control" id="handon_js_object"></textarea>
+                        </div>
+                        <div class="mb-3 col">
+                            <label for="handon_js_json" class="form-label">JSON(唯讀)</label>
+                            <textarea rows="10" class="form-control" id="handon_js_json" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 py-2">
+                <h3>我的卡片</h3>
+                <div class="cards-block">
+                    <div class="row gx-3 bg-success p-2 text-dark bg-opacity-50 rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <!-- js-cookie -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+
+    <script>
+        const createCookieKeyInput = document.querySelector('#create_cookie_key')
+        const createCookieValueInput = document.querySelector('#create_cookie_value')
+
+        const readCookieKeyInput = document.querySelector('#read_cookie_key')
+        const readCookieValueInput = document.querySelector('#read_cookie_value')
+
+        const createBtn = document.querySelector('.create-block button')
+        const readBtn = document.querySelector('.read-block button')
+        const removeBtn = document.querySelector('.remove-block button')
+
+        function createCookie() {
+            const key = createCookieKeyInput.value
+            const value = createCookieValueInput.value
+
+            Cookies.set(key, value)
+            alert('新增成功')
+            window.location.reload()
+
+        }
+
+        function readCookie() {
+            const key = readCookieKeyInput.value
+
+            const value = Cookies.get(key)
+
+            readCookieValueInput.value = value
+        }
+
+        function removeAllCookies() {
+            let keys = Object.keys(Cookies.get());
+            keys.forEach((item) => { Cookies.remove(item) })
+            alert('清除成功！')
+            window.location.reload()
+        }
+
+        createBtn.addEventListener('click', createCookie)
+        readBtn.addEventListener('click', readCookie)
+        removeBtn.addEventListener('click', removeAllCookies)
+
+        const handonModelInput = document.querySelector('#handon_model')
+        const handJsObjectInput = document.querySelector('#handon_js_object')
+        const handJsJsonInput = document.querySelector('#handon_js_json')
+        const cardRenderScope = document.querySelector('.cards-block .row')
+        const saveCardListDataBtn = document.querySelector('.handon-block button')
+
+        handonModelInput.value =
+            `[{
+      name: '商品名稱',
+      imgUrl: '商品連結',
+      content: '商品內文'
+    }]`
+
+
+        function covertStringToObject() {
+            return eval(handJsObjectInput.value)
+        }
+
+        handJsObjectInput.addEventListener('input', () => {
+            handJsJsonInput.value = JSON.stringify(covertStringToObject())
+
+            cardRenderScope.innerHTML = ''
+            covertStringToObject().forEach(el => {
+                cardRenderScope.innerHTML +=
+                    `
+        <div class="col-12 col-md-3">
+        <div class="card">
+            <img alt="" src="${el.imgUrl}" class="card-img-top">
+            <div class="card-body">
+            <h5 class="card-title">${el.name}</h5>
+            <p class="card-text">${el.content}</p>
+            </div>
+        </div>
+        </div>
+        `
+            })
+        })
+
+    </script>
+</body>
+
+</html>
